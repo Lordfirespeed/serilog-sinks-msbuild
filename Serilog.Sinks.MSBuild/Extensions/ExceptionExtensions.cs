@@ -1,0 +1,113 @@
+/*
+ * The contents of this file have been sourced from various projects and modified by Joe Clack.
+ *
+ * https://github.com/dotnet/msbuild/blob/23f77529a83531782dd498bf400381842c3d2d9e/src/Shared/TaskLoggingHelper.cs
+ * The .NET Foundation licenses the referenced file to Joe Clack under the MIT license.
+ *
+ * Copyright (c) 2024 Joe Clack
+ * Joe Clack licenses this file to you under the LGPL-3.0-OR-LATER license.
+ */
+
+using System;
+using System.Linq;
+using System.Text;
+using Microsoft.Build.Utilities;
+
+namespace Serilog.Sinks.MSBuild.Extensions;
+
+/// <summary>
+/// Contains extension methods that add functionality to <see cref="Exception"/>.
+/// </summary>
+public static class ExceptionExtensions
+{
+    /// <summary>
+    /// Render an <see cref="Exception"/> to a 'pretty' string.
+    /// </summary>
+    /// <param name="exception">The <see cref="Exception"/> to render.</param>
+    /// <param name="style"><see cref="ExceptionRenderStyleFlags"/> to use to render the topmost exception(s).</param>
+    /// <param name="recursiveStyle"><see cref="ExceptionRenderStyleFlags"/> to use when rendering inner exceptions.</param>
+    /// <returns><paramref name="exception"/> rendered to a <see cref="string"/>.</returns>
+    /// <remarks><paramref name="recursiveStyle"/> defaults to <paramref name="style"/> when omitted or <see langword="null"/>.</remarks>
+    /// <exception cref="ArgumentNullException"><paramref name="exception"/> is <see langword="null"/></exception>
+    /// <seealso cref="TaskLoggingHelper.LogErrorFromException(Exception, bool, bool, string)"/>
+    public static string Render(this Exception exception, ExceptionRenderStyleFlags style, ExceptionRenderStyleFlags? recursiveStyle = null)
+    {
+        recursiveStyle ??= style;
+
+        return exception switch {
+            null => throw new ArgumentNullException(nameof(Exception), $"{nameof(Exception)} cannot be null"),
+            AggregateException aggregateException => RenderAggregate(aggregateException, style, recursiveStyle.Value),
+            _ => RenderRecursively(exception, style, recursiveStyle.Value),
+        };
+    }
+
+    /// <summary>
+    /// Delimiter that is used to separate inner exceptions of an <see cref="AggregateException"/>.
+    /// </summary>
+    private static string InnerExceptionDelimiter =>
+        $"{Environment.NewLine}{String.Concat(Enumerable.Repeat("\u2500", 10))}{Environment.NewLine}{Environment.NewLine}";
+
+    private static string RenderAggregate(AggregateException aggregateException, ExceptionRenderStyleFlags style, ExceptionRenderStyleFlags recursiveStyle)
+    {
+        var innerExceptionStrings = aggregateException
+            .Flatten()
+            .InnerExceptions
+            .Select(innerException => innerException.Render(style, recursiveStyle))
+            .Select(rendered => rendered.MultilineIndent(4));
+
+        return new StringBuilder(200)
+            .AppendLine(style.Has(ExceptionRenderStyleFlags.IncludeType) ? $"{nameof(AggregateException)}\\n{{" : "Issues:")
+            .AppendLine(String.Join(InnerExceptionDelimiter, innerExceptionStrings))
+            .Append(style.Has(ExceptionRenderStyleFlags.IncludeType) ? "}\\n" : String.Empty)
+            .ToString()
+            .TrimEnd();
+    }
+
+    private static string RenderDefault(Exception exception, ExceptionRenderStyleFlags style)
+    {
+        if (style.Has(ExceptionRenderStyleFlags.IncludeInner))
+            throw new NotSupportedException($"{nameof(RenderDefault)} cannot include inner exceptions. Use {nameof(RenderRecursively)}.");
+
+        var builder = new StringBuilder(100);
+
+        if (style.Has(ExceptionRenderStyleFlags.IncludeType))
+            builder.Append($"{exception.GetType()}: ");
+
+        builder.AppendLine(exception.Message);
+
+        if (style.Has(ExceptionRenderStyleFlags.IncludeStackTrace))
+            builder.AppendLine(exception.StackTrace);
+
+        return builder
+            .ToString()
+            .TrimEnd();
+    }
+
+    private static string RenderRecursively(Exception exception, ExceptionRenderStyleFlags style, ExceptionRenderStyleFlags recursiveStyle)
+    {
+        if (!style.Has(ExceptionRenderStyleFlags.IncludeInner))
+            return RenderDefault(exception, style);
+
+        var builder = new StringBuilder(100);
+
+        if (style.Has(ExceptionRenderStyleFlags.IncludeType))
+            builder.Append($"{exception.GetType()}: ");
+
+        builder.AppendLine(exception.Message);
+
+        if (style.Has(ExceptionRenderStyleFlags.IncludeStackTrace) && exception.StackTrace is not null)
+            builder.AppendLine(exception.StackTrace.MultilineIndent(4));
+
+        if (style.Has(ExceptionRenderStyleFlags.IncludeInner) && exception.InnerException is not null) {
+            var indentedInnerExceptionRender = exception.InnerException
+                .Render(recursiveStyle)
+                .MultilineIndent(4)
+                .Trim();
+            builder.AppendLine($"Caused by: {indentedInnerExceptionRender}");
+        }
+
+        return builder
+            .ToString()
+            .TrimEnd();
+    }
+}
