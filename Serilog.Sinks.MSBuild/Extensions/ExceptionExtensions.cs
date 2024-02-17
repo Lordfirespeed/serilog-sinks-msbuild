@@ -63,6 +63,21 @@ public static class ExceptionExtensions
             .TrimEnd();
     }
 
+    private static string RenderKernel(Exception exception, bool shouldIncludeType)
+    {
+        var messageHasContent = !string.IsNullOrWhiteSpace(exception.Message);
+
+        if (messageHasContent && shouldIncludeType) return $"{exception.GetType()}: {exception.Message}";
+
+        if (messageHasContent) return exception.Message;
+
+        if (shouldIncludeType) return exception
+            .GetType()
+            .ToString();
+
+        return "[no message]";
+    }
+
     private static string RenderDefault(Exception exception, ExceptionRenderStyleFlags style)
     {
         if (style.Has(ExceptionRenderStyleFlags.IncludeInner))
@@ -70,13 +85,11 @@ public static class ExceptionExtensions
 
         var builder = new StringBuilder(100);
 
-        if (style.Has(ExceptionRenderStyleFlags.IncludeType))
-            builder.Append($"{exception.GetType()}: ");
+        builder.AppendLine(RenderKernel(exception, style.Has(ExceptionRenderStyleFlags.IncludeType)));
 
-        builder.AppendLine(exception.Message);
-
-        if (style.Has(ExceptionRenderStyleFlags.IncludeStackTrace))
-            builder.AppendLine(exception.StackTrace);
+        if (style.Has(ExceptionRenderStyleFlags.IncludeStackTrace) && exception.StackTrace is not null)
+            // stack traces are indented by 2 characters by default
+            builder.AppendLine(exception.StackTrace.MultilineIndent(2));
 
         return builder
             .ToString()
@@ -90,18 +103,15 @@ public static class ExceptionExtensions
 
         var builder = new StringBuilder(100);
 
-        if (style.Has(ExceptionRenderStyleFlags.IncludeType))
-            builder.Append($"{exception.GetType()}: ");
-
-        builder.AppendLine(exception.Message);
+        builder.AppendLine(RenderKernel(exception, style.Has(ExceptionRenderStyleFlags.IncludeType)));
 
         if (style.Has(ExceptionRenderStyleFlags.IncludeStackTrace) && exception.StackTrace is not null)
-            builder.AppendLine(exception.StackTrace.MultilineIndent(4));
+            // stack traces are indented by 2 characters by default
+            builder.AppendLine(exception.StackTrace.MultilineIndent(2));
 
         if (style.Has(ExceptionRenderStyleFlags.IncludeInner) && exception.InnerException is not null) {
             var indentedInnerExceptionRender = exception.InnerException
                 .Render(recursiveStyle)
-                .MultilineIndent(4)
                 .Trim();
             builder.AppendLine($"Caused by: {indentedInnerExceptionRender}");
         }
