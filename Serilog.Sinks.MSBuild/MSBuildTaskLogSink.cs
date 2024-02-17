@@ -19,6 +19,7 @@ using Microsoft.Build.Utilities;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.MSBuild.Extensions;
+using Serilog.Sinks.MSBuild.Themes;
 
 namespace Serilog.Sinks.MSBuild;
 
@@ -35,35 +36,20 @@ public class MSBuildTaskLogSink : ILogEventSink
         | ExceptionRenderStyleFlags.IncludeType;
 
     private readonly IFormatProvider? _formatProvider;
+    private readonly MSBuildConsoleTheme? _theme;
     private readonly TaskLoggingHelper _taskLoggingHelper;
-
-    /// <summary>
-    /// Creates a <see cref="MSBuildTaskLogSink"/> from an <see cref="ITask"/>.
-    /// </summary>
-    /// <param name="task">The <see cref="ITask"/> to which log events will be sent.</param>
-    /// <param name="formatProvider">Supplies culture-specific
-    /// formatting information. Can be <see langword="null"/>.</param>
-    public MSBuildTaskLogSink(ITask task, IFormatProvider? formatProvider)
-    {
-        if (task is null)
-            throw new ArgumentNullException(nameof(task));
-
-        _taskLoggingHelper = task is Task implementedTask ? implementedTask.Log : new TaskLoggingHelper(task);
-        _formatProvider = formatProvider;
-    }
 
     /// <summary>
     /// Creates a <see cref="MSBuildTaskLogSink"/> from a <see cref="TaskLoggingHelper"/>.
     /// </summary>
     /// <param name="taskLoggingHelper">The <see cref="TaskLoggingHelper"/> to which log events will be sent.</param>
+    /// <param name="theme">The theme to apply to the styled output.</param>
     /// <param name="formatProvider">Supplies culture-specific
     /// formatting information. Can be <see langword="null"/>.</param>
-    public MSBuildTaskLogSink(TaskLoggingHelper taskLoggingHelper, IFormatProvider? formatProvider)
+    public MSBuildTaskLogSink(TaskLoggingHelper taskLoggingHelper, MSBuildConsoleTheme theme, IFormatProvider? formatProvider)
     {
-        if (taskLoggingHelper is null)
-            throw new ArgumentNullException(nameof(taskLoggingHelper));
-
-        _taskLoggingHelper = taskLoggingHelper;
+        _taskLoggingHelper = taskLoggingHelper ?? throw new ArgumentNullException(nameof(taskLoggingHelper));
+        _theme = theme ?? throw new ArgumentNullException(nameof(theme));
         _formatProvider = formatProvider;
     }
 

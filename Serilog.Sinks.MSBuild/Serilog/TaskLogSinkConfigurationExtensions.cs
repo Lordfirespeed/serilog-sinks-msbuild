@@ -43,8 +43,17 @@ public static class TaskLogSinkConfigurationExtensions
         this LoggerSinkConfiguration sinkConfiguration,
         ITask task,
         IFormatProvider? formatProvider = null,
-        MSBuildConsoleTheme? theme = null
-    ) => sinkConfiguration.Sink(new MSBuildTaskLogSink(task, formatProvider));
+        MSBuildConsoleTheme? theme = null)
+    {
+        if (sinkConfiguration is null) throw new ArgumentNullException(nameof(sinkConfiguration));
+        if (task is null) throw new ArgumentNullException(nameof(task));
+
+        TaskLoggingHelper taskLoggingHelper = task is Task implementedTask ? implementedTask.Log : new TaskLoggingHelper(task);
+
+        theme ??= SystemMSBuildConsoleTheme.Literate;
+
+        return sinkConfiguration.Sink(new MSBuildTaskLogSink(taskLoggingHelper, theme, formatProvider));
+    }
 
     /// <summary>
     /// Redirects log events to an MSBuild <see cref="TaskLoggingHelper"/>.
@@ -52,6 +61,8 @@ public static class TaskLogSinkConfigurationExtensions
     /// <param name="sinkConfiguration">Logger sink configuration.</param>
     /// <param name="taskLoggingHelper">The MSBuild <see cref="TaskLoggingHelper"/> to log events to.</param>
     /// <param name="formatProvider">Supplies culture-specific formatting information. Can be <see langword="null"/>.</param>
+    /// <param name="theme">The theme to apply to the styled output. If not specified,
+    /// uses <see cref="SystemMSBuildConsoleTheme.Literate"/>.</param>
     /// <returns>Configuration object allowing method chaining.</returns>
     /// <remarks>Because this sink redirects messages to another logging system,
     /// it is recommended to allow all event levels to pass through.</remarks>
@@ -59,6 +70,13 @@ public static class TaskLogSinkConfigurationExtensions
         this LoggerSinkConfiguration sinkConfiguration,
         TaskLoggingHelper taskLoggingHelper,
         IFormatProvider? formatProvider = null,
-        MSBuildConsoleTheme? theme = null
-    ) => sinkConfiguration.Sink(new MSBuildTaskLogSink(taskLoggingHelper, formatProvider));
+        MSBuildConsoleTheme? theme = null)
+    {
+        if (sinkConfiguration is null) throw new ArgumentNullException(nameof(sinkConfiguration));
+        if (taskLoggingHelper is null) throw new ArgumentNullException(nameof(taskLoggingHelper));
+
+        theme ??= SystemMSBuildConsoleTheme.Literate;
+
+        return sinkConfiguration.Sink(new MSBuildTaskLogSink(taskLoggingHelper, theme, formatProvider));
+    }
 }
