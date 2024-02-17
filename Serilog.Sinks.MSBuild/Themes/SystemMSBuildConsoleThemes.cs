@@ -15,7 +15,7 @@ namespace Serilog.Sinks.MSBuild.Themes;
 
 static class SystemMSBuildConsoleThemes
 {
-    public static SystemMsBuildConsoleTheme Literate { get; } = new SystemMsBuildConsoleTheme(
+    public static SystemMSBuildConsoleTheme Literate { get; } = new SystemMSBuildConsoleTheme(
         new Dictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle>
         {
             [MSBuildConsoleThemeStyle.Text] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
@@ -36,7 +36,7 @@ static class SystemMSBuildConsoleThemes
             [MSBuildConsoleThemeStyle.LevelFatal] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Red },
         });
 
-    public static SystemMsBuildConsoleTheme Grayscale { get; } = new SystemMsBuildConsoleTheme(
+    public static SystemMSBuildConsoleTheme Grayscale { get; } = new SystemMSBuildConsoleTheme(
         new Dictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle>
         {
             [MSBuildConsoleThemeStyle.Text] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
@@ -57,7 +57,7 @@ static class SystemMSBuildConsoleThemes
             [MSBuildConsoleThemeStyle.LevelFatal] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Black, Background = ConsoleColor.White },
         });
 
-    public static SystemMsBuildConsoleTheme Colored { get; } = new SystemMsBuildConsoleTheme(
+    public static SystemMSBuildConsoleTheme Colored { get; } = new SystemMSBuildConsoleTheme(
         new Dictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle>
         {
             [MSBuildConsoleThemeStyle.Text] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },

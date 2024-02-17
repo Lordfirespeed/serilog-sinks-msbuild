@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Serilog.Sinks.MSBuild.Themes;
 
-class EmptyMsBuildConsoleTheme : MSBuildConsoleTheme
+class EmptyMSBuildConsoleTheme : MSBuildConsoleTheme
 {
     public override bool CanBuffer => true;
 

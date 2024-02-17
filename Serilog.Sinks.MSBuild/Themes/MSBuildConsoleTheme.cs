@@ -20,7 +20,7 @@ public abstract class MSBuildConsoleTheme
     /// <summary>
     /// No styling applied.
     /// </summary>
-    public static MSBuildConsoleTheme None { get; } = new EmptyMsBuildConsoleTheme();
+    public static MSBuildConsoleTheme None { get; } = new EmptyMSBuildConsoleTheme();
 
     /// <summary>
     /// True if styling applied by the theme is written into the output, and can thus be

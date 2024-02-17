@@ -19,29 +19,29 @@ namespace Serilog.Sinks.MSBuild.Themes;
 /// A console theme using the styling facilities of the <see cref="System.Console"/> class. Recommended
 /// for Windows versions prior to Windows 10.
 /// </summary>
-public class SystemMsBuildConsoleTheme : MSBuildConsoleTheme
+public class SystemMSBuildConsoleTheme : MSBuildConsoleTheme
 {
     /// <summary>
     /// A theme using only gray, black and white.
     /// </summary>
-    public static SystemMsBuildConsoleTheme Grayscale { get; } = SystemMSBuildConsoleThemes.Grayscale;
+    public static SystemMSBuildConsoleTheme Grayscale { get; } = SystemMSBuildConsoleThemes.Grayscale;
 
     /// <summary>
     /// A theme in the style of the original <i>Serilog.Sinks.Literate</i>.
     /// </summary>
-    public static SystemMsBuildConsoleTheme Literate { get; } = SystemMSBuildConsoleThemes.Literate;
+    public static SystemMSBuildConsoleTheme Literate { get; } = SystemMSBuildConsoleThemes.Literate;
 
     /// <summary>
     /// A theme based on the original Serilog "colored console" sink.
     /// </summary>
-    public static SystemMsBuildConsoleTheme Colored { get; } = SystemMSBuildConsoleThemes.Colored;
+    public static SystemMSBuildConsoleTheme Colored { get; } = SystemMSBuildConsoleThemes.Colored;
 
     /// <summary>
     /// Construct a theme given a set of styles.
     /// </summary>
     /// <param name="styles">Styles to apply within the theme.</param>
     /// <exception cref="ArgumentNullException">When <paramref name="styles"/> is <code>null</code></exception>
-    public SystemMsBuildConsoleTheme(IReadOnlyDictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle> styles)
+    public SystemMSBuildConsoleTheme(IReadOnlyDictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle> styles)
     {
         if (styles is null) throw new ArgumentNullException(nameof(styles));
         Styles = styles.ToDictionary(kv => kv.Key, kv => kv.Value);

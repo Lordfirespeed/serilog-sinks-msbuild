@@ -16,6 +16,7 @@ using Microsoft.Build.Utilities;
 using Serilog.Events;
 using Serilog.Sinks.MSBuild;
 using Serilog.Configuration;
+using Serilog.Sinks.MSBuild.Themes;
 
 // ReSharper disable once CheckNamespace
 namespace Serilog;
@@ -33,13 +34,16 @@ public static class TaskLogSinkConfigurationExtensions
     /// <param name="sinkConfiguration">Logger sink configuration.</param>
     /// <param name="task">The MSBuild <see cref="ITask"/> to log events for.</param>
     /// <param name="formatProvider">Supplies culture-specific formatting information, or <see langword="null"/>.</param>
+    /// <param name="theme">The theme to apply to the styled output. If not specified,
+    /// uses <see cref="SystemMSBuildConsoleTheme.Literate"/>.</param>
     /// <returns>Configuration object allowing method chaining.</returns>
     /// <remarks>Because this sink redirects messages to another logging system,
     /// it is recommended to allow all event levels to pass through.</remarks>
     public static LoggerConfiguration MSBuildTask(
         this LoggerSinkConfiguration sinkConfiguration,
         ITask task,
-        IFormatProvider? formatProvider = null
+        IFormatProvider? formatProvider = null,
+        MSBuildConsoleTheme? theme = null
     ) => sinkConfiguration.Sink(new MSBuildTaskLogSink(task, formatProvider));
 
     /// <summary>
@@ -54,6 +58,7 @@ public static class TaskLogSinkConfigurationExtensions
     public static LoggerConfiguration MSBuildTaskLoggingHelper(
         this LoggerSinkConfiguration sinkConfiguration,
         TaskLoggingHelper taskLoggingHelper,
-        IFormatProvider? formatProvider = null
+        IFormatProvider? formatProvider = null,
+        MSBuildConsoleTheme? theme = null
     ) => sinkConfiguration.Sink(new MSBuildTaskLogSink(taskLoggingHelper, formatProvider));
 }
