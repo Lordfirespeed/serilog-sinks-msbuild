@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Title>Serilog sink for MSBuild</Title>
-    <Authors>Theodore Tsirpanis</Authors>
+    <Authors>Theodore Tsirpanis, Joe Clack</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageTags>serilog;logging;msbuild</PackageTags>
     <Description>This package provides a Serilog sink that redirects events to MSBuild.
