@@ -35,10 +35,6 @@ and if a Serilog message has an exception, its ToString() representation will be
   <ItemGroup>
     <None Include="../logo.png" Pack="true" PackagePath="" />
     <PackageReference Include="Serilog" Version="2.0.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' != 'net45'">
     <PackageReference Include="Microsoft.Build.Framework" Version="16.8.0" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.8.0" ExcludeAssets="runtime" />
   </ItemGroup>
