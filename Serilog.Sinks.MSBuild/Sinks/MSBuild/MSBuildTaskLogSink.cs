@@ -14,11 +14,13 @@
  */
 
 using System;
+using System.IO;
+using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Serilog.Core;
 using Serilog.Events;
-using Serilog.Sinks.MSBuild.Extensions;
+using Serilog.Formatting;
 using Serilog.Sinks.MSBuild.Themes;
 
 namespace Serilog.Sinks.MSBuild;
@@ -30,13 +32,10 @@ namespace Serilog.Sinks.MSBuild;
 /// </summary>
 public class MSBuildTaskLogSink : ILogEventSink
 {
-    private const ExceptionRenderStyleFlags ExceptionRenderStyle = 0
-        | ExceptionRenderStyleFlags.IncludeInner
-        | ExceptionRenderStyleFlags.IncludeStackTrace
-        | ExceptionRenderStyleFlags.IncludeType;
+    const int DefaultWriteBufferCapacity = 256;
 
-    private readonly IFormatProvider? _formatProvider;
-    private readonly MSBuildConsoleTheme? _theme;
+    private readonly ITextFormatter _formatter;
+    private readonly MSBuildConsoleTheme _theme;
     private readonly TaskLoggingHelper _taskLoggingHelper;
 
     /// <summary>
@@ -44,23 +43,26 @@ public class MSBuildTaskLogSink : ILogEventSink
     /// </summary>
     /// <param name="taskLoggingHelper">The <see cref="TaskLoggingHelper"/> to which log events will be sent.</param>
     /// <param name="theme">The theme to apply to the styled output.</param>
-    /// <param name="formatProvider">Supplies culture-specific
+    /// <param name="formatter">Supplies culture-specific
     /// formatting information. Can be <see langword="null"/>.</param>
-    public MSBuildTaskLogSink(TaskLoggingHelper taskLoggingHelper, MSBuildConsoleTheme theme, IFormatProvider? formatProvider)
+    public MSBuildTaskLogSink(TaskLoggingHelper taskLoggingHelper, MSBuildConsoleTheme theme, ITextFormatter formatter)
     {
         _taskLoggingHelper = taskLoggingHelper ?? throw new ArgumentNullException(nameof(taskLoggingHelper));
         _theme = theme ?? throw new ArgumentNullException(nameof(theme));
-        _formatProvider = formatProvider;
+        _formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
     }
 
     /// <inheritdoc cref="ILogEventSink.Emit"/>
     public void Emit(LogEvent logEvent)
     {
-        var context = MSBuildContext.FromLogEvent(logEvent);
-        var message = logEvent.RenderMessage(_formatProvider);
+        if (!_theme.CanBuffer)
+            throw new NotSupportedException("MSBuild log themes must support buffering.");
 
-        if (logEvent.Exception is not null)
-            message += Environment.NewLine + logEvent.RenderException(ExceptionRenderStyle);
+        var buffer = new StringWriter(new StringBuilder(DefaultWriteBufferCapacity));
+        _formatter.Format(logEvent, buffer);
+        var message = buffer.ToString();
+
+        var context = MSBuildContext.FromLogEvent(logEvent);
 
         switch (logEvent.Level)
         {
