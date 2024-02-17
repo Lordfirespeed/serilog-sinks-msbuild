@@ -9,17 +9,22 @@
  */
 
 using System.IO;
+using System.Linq;
 using Serilog.Events;
 using Serilog.Parsing;
+using Serilog.Sinks.MSBuild.Extensions;
 using Serilog.Sinks.MSBuild.Themes;
 
 namespace Serilog.Sinks.MSBuild.Output;
 
 class ExceptionTokenRenderer : OutputTemplateTokenRenderer
 {
-    const string StackFrameLinePrefix = "   ";
-
     private readonly MSBuildConsoleTheme _theme;
+
+    private const ExceptionRenderStyleFlags ExceptionRenderStyle = 0
+        | ExceptionRenderStyleFlags.IncludeInner
+        | ExceptionRenderStyleFlags.IncludeStackTrace
+        | ExceptionRenderStyleFlags.IncludeType;
 
     public ExceptionTokenRenderer(MSBuildConsoleTheme theme, PropertyToken pt)
     {
@@ -33,15 +38,21 @@ class ExceptionTokenRenderer : OutputTemplateTokenRenderer
         if (logEvent.Exception is null)
             return;
 
-        var lines = new StringReader(logEvent.Exception.ToString());
-        string? nextLine;
-        while ((nextLine = lines.ReadLine()) != null)
+        var lines = new StringReader(logEvent.RenderException(ExceptionRenderStyle));
+        while (lines.ReadLine() is { } nextLine)
         {
-            var style = nextLine.StartsWith(StackFrameLinePrefix) ? MSBuildConsoleThemeStyle.SecondaryText : MSBuildConsoleThemeStyle.Text;
+            var style = LineIsStackTrace(nextLine) ? MSBuildConsoleThemeStyle.SecondaryText : MSBuildConsoleThemeStyle.Text;
             var _ = 0;
             using (_theme.Apply(output, style, ref _))
                 output.Write(nextLine);
             output.WriteLine();
         }
+
+        // https://stackoverflow.com/a/20411839/11045433
+        int LeadingSpaceCount(string line) => line
+            .TakeWhile(c => c is ' ')
+            .Count();
+
+        bool LineIsStackTrace(string line) => LeadingSpaceCount(line) % 4 == 3;
     }
 }
