@@ -10,18 +10,17 @@
 
 using System.IO;
 
-namespace Serilog.Sinks.MSBuild.Themes
+namespace Serilog.Sinks.MSBuild.Themes;
+
+class EmptyMsBuildConsoleTheme : MSBuildConsoleTheme
 {
-    class EmptyMsBuildConsoleTheme : MSBuildConsoleTheme
+    public override bool CanBuffer => true;
+
+    protected override int ResetCharCount { get; }
+
+    public override int Set(TextWriter output, MSBuildConsoleThemeStyle style) => 0;
+
+    public override void Reset(TextWriter output)
     {
-        public override bool CanBuffer => true;
-
-        protected override int ResetCharCount { get; }
-
-        public override int Set(TextWriter output, MSBuildConsoleThemeStyle style) => 0;
-
-        public override void Reset(TextWriter output)
-        {
-        }
     }
 }

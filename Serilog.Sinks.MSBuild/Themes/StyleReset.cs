@@ -11,22 +11,21 @@
 using System;
 using System.IO;
 
-namespace Serilog.Sinks.MSBuild.Themes
+namespace Serilog.Sinks.MSBuild.Themes;
+
+struct StyleReset : IDisposable
 {
-    struct StyleReset : IDisposable
+    readonly MSBuildConsoleTheme _theme;
+    readonly TextWriter _output;
+
+    public StyleReset(MSBuildConsoleTheme theme, TextWriter output)
     {
-        readonly MSBuildConsoleTheme _theme;
-        readonly TextWriter _output;
+        _theme = theme;
+        _output = output;
+    }
 
-        public StyleReset(MSBuildConsoleTheme theme, TextWriter output)
-        {
-            _theme = theme;
-            _output = output;
-        }
-
-        public void Dispose()
-        {
-            _theme.Reset(_output);
-        }
+    public void Dispose()
+    {
+        _theme.Reset(_output);
     }
 }

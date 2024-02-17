@@ -10,21 +10,20 @@
 
 using System;
 
-namespace Serilog.Sinks.MSBuild.Themes
+namespace Serilog.Sinks.MSBuild.Themes;
+
+/// <summary>
+/// Styling applied using the <see cref="System.ConsoleColor"/> enumeration.
+/// </summary>
+public struct SystemMSBuildConsoleThemeStyle
 {
     /// <summary>
-    /// Styling applied using the <see cref="System.ConsoleColor"/> enumeration.
+    /// The foreground color to apply.
     /// </summary>
-    public struct SystemMSBuildConsoleThemeStyle
-    {
-        /// <summary>
-        /// The foreground color to apply.
-        /// </summary>
-        public ConsoleColor? Foreground;
+    public ConsoleColor? Foreground;
 
-        /// <summary>
-        /// The background color to apply.
-        /// </summary>
-        public ConsoleColor? Background;
-    }
+    /// <summary>
+    /// The background color to apply.
+    /// </summary>
+    public ConsoleColor? Background;
 }

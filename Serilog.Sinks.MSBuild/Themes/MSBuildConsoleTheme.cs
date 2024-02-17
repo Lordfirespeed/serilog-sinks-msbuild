@@ -10,49 +10,48 @@
 
 using System.IO;
 
-namespace Serilog.Sinks.MSBuild.Themes
+namespace Serilog.Sinks.MSBuild.Themes;
+
+/// <summary>
+/// The base class for styled terminal output.
+/// </summary>
+public abstract class MSBuildConsoleTheme
 {
     /// <summary>
-    /// The base class for styled terminal output.
+    /// No styling applied.
     /// </summary>
-    public abstract class MSBuildConsoleTheme
+    public static MSBuildConsoleTheme None { get; } = new EmptyMsBuildConsoleTheme();
+
+    /// <summary>
+    /// True if styling applied by the theme is written into the output, and can thus be
+    /// buffered and measured.
+    /// </summary>
+    public abstract bool CanBuffer { get; }
+
+    /// <summary>
+    /// Begin a span of text in the specified <paramref name="style"/>.
+    /// </summary>
+    /// <param name="output">Output destination.</param>
+    /// <param name="style">Style to apply.</param>
+    /// <returns> The number of characters written to <paramref name="output"/>. </returns>
+    public abstract int Set(TextWriter output, MSBuildConsoleThemeStyle style);
+
+    /// <summary>
+    /// Reset the output to un-styled colors.
+    /// </summary>
+    /// <param name="output">Output destination.</param>
+    public abstract void Reset(TextWriter output);
+
+    /// <summary>
+    /// The number of characters written by the <see cref="Reset(TextWriter)"/> method.
+    /// </summary>
+    protected abstract int ResetCharCount { get; }
+
+    internal StyleReset Apply(TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
     {
-        /// <summary>
-        /// No styling applied.
-        /// </summary>
-        public static MSBuildConsoleTheme None { get; } = new EmptyMsBuildConsoleTheme();
+        invisibleCharacterCount += Set(output, style);
+        invisibleCharacterCount += ResetCharCount;
 
-        /// <summary>
-        /// True if styling applied by the theme is written into the output, and can thus be
-        /// buffered and measured.
-        /// </summary>
-        public abstract bool CanBuffer { get; }
-
-        /// <summary>
-        /// Begin a span of text in the specified <paramref name="style"/>.
-        /// </summary>
-        /// <param name="output">Output destination.</param>
-        /// <param name="style">Style to apply.</param>
-        /// <returns> The number of characters written to <paramref name="output"/>. </returns>
-        public abstract int Set(TextWriter output, MSBuildConsoleThemeStyle style);
-
-        /// <summary>
-        /// Reset the output to un-styled colors.
-        /// </summary>
-        /// <param name="output">Output destination.</param>
-        public abstract void Reset(TextWriter output);
-
-        /// <summary>
-        /// The number of characters written by the <see cref="Reset(TextWriter)"/> method.
-        /// </summary>
-        protected abstract int ResetCharCount { get; }
-
-        internal StyleReset Apply(TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
-        {
-            invisibleCharacterCount += Set(output, style);
-            invisibleCharacterCount += ResetCharCount;
-
-            return new StyleReset(this, output);
-        }
+        return new StyleReset(this, output);
     }
 }

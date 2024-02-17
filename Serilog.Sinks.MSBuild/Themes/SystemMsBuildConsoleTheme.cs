@@ -13,67 +13,66 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Serilog.Sinks.MSBuild.Themes
+namespace Serilog.Sinks.MSBuild.Themes;
+
+/// <summary>
+/// A console theme using the styling facilities of the <see cref="System.Console"/> class. Recommended
+/// for Windows versions prior to Windows 10.
+/// </summary>
+public class SystemMsBuildConsoleTheme : MSBuildConsoleTheme
 {
     /// <summary>
-    /// A console theme using the styling facilities of the <see cref="System.Console"/> class. Recommended
-    /// for Windows versions prior to Windows 10.
+    /// A theme using only gray, black and white.
     /// </summary>
-    public class SystemMsBuildConsoleTheme : MSBuildConsoleTheme
+    public static SystemMsBuildConsoleTheme Grayscale { get; } = SystemMSBuildConsoleThemes.Grayscale;
+
+    /// <summary>
+    /// A theme in the style of the original <i>Serilog.Sinks.Literate</i>.
+    /// </summary>
+    public static SystemMsBuildConsoleTheme Literate { get; } = SystemMSBuildConsoleThemes.Literate;
+
+    /// <summary>
+    /// A theme based on the original Serilog "colored console" sink.
+    /// </summary>
+    public static SystemMsBuildConsoleTheme Colored { get; } = SystemMSBuildConsoleThemes.Colored;
+
+    /// <summary>
+    /// Construct a theme given a set of styles.
+    /// </summary>
+    /// <param name="styles">Styles to apply within the theme.</param>
+    /// <exception cref="ArgumentNullException">When <paramref name="styles"/> is <code>null</code></exception>
+    public SystemMsBuildConsoleTheme(IReadOnlyDictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle> styles)
     {
-        /// <summary>
-        /// A theme using only gray, black and white.
-        /// </summary>
-        public static SystemMsBuildConsoleTheme Grayscale { get; } = SystemMSBuildConsoleThemes.Grayscale;
+        if (styles is null) throw new ArgumentNullException(nameof(styles));
+        Styles = styles.ToDictionary(kv => kv.Key, kv => kv.Value);
+    }
 
-        /// <summary>
-        /// A theme in the style of the original <i>Serilog.Sinks.Literate</i>.
-        /// </summary>
-        public static SystemMsBuildConsoleTheme Literate { get; } = SystemMSBuildConsoleThemes.Literate;
+    /// <inheritdoc/>
+    public IReadOnlyDictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle> Styles { get; }
 
-        /// <summary>
-        /// A theme based on the original Serilog "colored console" sink.
-        /// </summary>
-        public static SystemMsBuildConsoleTheme Colored { get; } = SystemMSBuildConsoleThemes.Colored;
+    /// <inheritdoc/>
+    public override bool CanBuffer => false;
 
-        /// <summary>
-        /// Construct a theme given a set of styles.
-        /// </summary>
-        /// <param name="styles">Styles to apply within the theme.</param>
-        /// <exception cref="ArgumentNullException">When <paramref name="styles"/> is <code>null</code></exception>
-        public SystemMsBuildConsoleTheme(IReadOnlyDictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle> styles)
+    /// <inheritdoc/>
+    protected override int ResetCharCount { get; }
+
+    /// <inheritdoc/>
+    public override int Set(TextWriter output, MSBuildConsoleThemeStyle style)
+    {
+        if (Styles.TryGetValue(style, out var wcts))
         {
-            if (styles is null) throw new ArgumentNullException(nameof(styles));
-            Styles = styles.ToDictionary(kv => kv.Key, kv => kv.Value);
+            if (wcts.Foreground.HasValue)
+                Console.ForegroundColor = wcts.Foreground.Value;
+            if (wcts.Background.HasValue)
+                Console.BackgroundColor = wcts.Background.Value;
         }
 
-        /// <inheritdoc/>
-        public IReadOnlyDictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle> Styles { get; }
+        return 0;
+    }
 
-        /// <inheritdoc/>
-        public override bool CanBuffer => false;
-
-        /// <inheritdoc/>
-        protected override int ResetCharCount { get; }
-
-        /// <inheritdoc/>
-        public override int Set(TextWriter output, MSBuildConsoleThemeStyle style)
-        {
-            if (Styles.TryGetValue(style, out var wcts))
-            {
-                if (wcts.Foreground.HasValue)
-                    Console.ForegroundColor = wcts.Foreground.Value;
-                if (wcts.Background.HasValue)
-                    Console.BackgroundColor = wcts.Background.Value;
-            }
-
-            return 0;
-        }
-
-        /// <inheritdoc/>
-        public override void Reset(TextWriter output)
-        {
-            Console.ResetColor();
-        }
+    /// <inheritdoc/>
+    public override void Reset(TextWriter output)
+    {
+        Console.ResetColor();
     }
 }

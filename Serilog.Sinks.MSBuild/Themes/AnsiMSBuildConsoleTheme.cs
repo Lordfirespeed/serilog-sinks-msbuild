@@ -13,69 +13,68 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Serilog.Sinks.MSBuild.Themes
+namespace Serilog.Sinks.MSBuild.Themes;
+
+/// <summary>
+/// A console theme using the ANSI terminal escape sequences. Recommended
+/// for Linux and Windows 10+.
+/// </summary>
+public class AnsiMSBuildConsoleTheme : MSBuildConsoleTheme
 {
     /// <summary>
-    /// A console theme using the ANSI terminal escape sequences. Recommended
-    /// for Linux and Windows 10+.
+    /// A 256-color theme along the lines of Visual Studio Code.
     /// </summary>
-    public class AnsiMSBuildConsoleTheme : MSBuildConsoleTheme
+    public static AnsiMSBuildConsoleTheme Code { get; } = AnsiMSBuildConsoleThemes.Code;
+
+    /// <summary>
+    /// A theme using only gray, black and white.
+    /// </summary>
+    public static AnsiMSBuildConsoleTheme Grayscale { get; } = AnsiMSBuildConsoleThemes.Grayscale;
+
+    /// <summary>
+    /// A theme in the style of the original <i>Serilog.Sinks.Literate</i>.
+    /// </summary>
+    public static AnsiMSBuildConsoleTheme Literate { get; } = AnsiMSBuildConsoleThemes.Literate;
+
+    /// <summary>
+    /// A theme in the style of the original <i>Serilog.Sinks.Literate</i> using only standard 16 terminal colors that will work on light backgrounds.
+    /// </summary>
+    public static AnsiMSBuildConsoleTheme Sixteen { get; } = AnsiMSBuildConsoleThemes.Sixteen;
+
+    readonly IReadOnlyDictionary<MSBuildConsoleThemeStyle, string> _styles;
+    const string AnsiStyleReset = "\x1b[0m";
+
+    /// <summary>
+    /// Construct a theme given a set of styles.
+    /// </summary>
+    /// <param name="styles">Styles to apply within the theme.</param>
+    /// <exception cref="ArgumentNullException">When <paramref name="styles"/> is <code>null</code></exception>
+    public AnsiMSBuildConsoleTheme(IReadOnlyDictionary<MSBuildConsoleThemeStyle, string> styles)
     {
-        /// <summary>
-        /// A 256-color theme along the lines of Visual Studio Code.
-        /// </summary>
-        public static AnsiMSBuildConsoleTheme Code { get; } = AnsiMSBuildConsoleThemes.Code;
+        if (styles is null) throw new ArgumentNullException(nameof(styles));
+        _styles = styles.ToDictionary(kv => kv.Key, kv => kv.Value);
+    }
 
-        /// <summary>
-        /// A theme using only gray, black and white.
-        /// </summary>
-        public static AnsiMSBuildConsoleTheme Grayscale { get; } = AnsiMSBuildConsoleThemes.Grayscale;
+    /// <inheritdoc/>
+    public override bool CanBuffer => true;
 
-        /// <summary>
-        /// A theme in the style of the original <i>Serilog.Sinks.Literate</i>.
-        /// </summary>
-        public static AnsiMSBuildConsoleTheme Literate { get; } = AnsiMSBuildConsoleThemes.Literate;
+    /// <inheritdoc/>
+    protected override int ResetCharCount { get; } = AnsiStyleReset.Length;
 
-        /// <summary>
-        /// A theme in the style of the original <i>Serilog.Sinks.Literate</i> using only standard 16 terminal colors that will work on light backgrounds.
-        /// </summary>
-        public static AnsiMSBuildConsoleTheme Sixteen { get; } = AnsiMSBuildConsoleThemes.Sixteen;
-
-        readonly IReadOnlyDictionary<MSBuildConsoleThemeStyle, string> _styles;
-        const string AnsiStyleReset = "\x1b[0m";
-
-        /// <summary>
-        /// Construct a theme given a set of styles.
-        /// </summary>
-        /// <param name="styles">Styles to apply within the theme.</param>
-        /// <exception cref="ArgumentNullException">When <paramref name="styles"/> is <code>null</code></exception>
-        public AnsiMSBuildConsoleTheme(IReadOnlyDictionary<MSBuildConsoleThemeStyle, string> styles)
+    /// <inheritdoc/>
+    public override int Set(TextWriter output, MSBuildConsoleThemeStyle style)
+    {
+        if (_styles.TryGetValue(style, out var ansiStyle))
         {
-            if (styles is null) throw new ArgumentNullException(nameof(styles));
-            _styles = styles.ToDictionary(kv => kv.Key, kv => kv.Value);
+            output.Write(ansiStyle);
+            return ansiStyle.Length;
         }
+        return 0;
+    }
 
-        /// <inheritdoc/>
-        public override bool CanBuffer => true;
-
-        /// <inheritdoc/>
-        protected override int ResetCharCount { get; } = AnsiStyleReset.Length;
-
-        /// <inheritdoc/>
-        public override int Set(TextWriter output, MSBuildConsoleThemeStyle style)
-        {
-            if (_styles.TryGetValue(style, out var ansiStyle))
-            {
-                output.Write(ansiStyle);
-                return ansiStyle.Length;
-            }
-            return 0;
-        }
-
-        /// <inheritdoc/>
-        public override void Reset(TextWriter output)
-        {
-            output.Write(AnsiStyleReset);
-        }
+    /// <inheritdoc/>
+    public override void Reset(TextWriter output)
+    {
+        output.Write(AnsiStyleReset);
     }
 }

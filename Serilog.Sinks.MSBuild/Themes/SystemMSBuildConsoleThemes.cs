@@ -11,71 +11,70 @@
 using System;
 using System.Collections.Generic;
 
-namespace Serilog.Sinks.MSBuild.Themes
+namespace Serilog.Sinks.MSBuild.Themes;
+
+static class SystemMSBuildConsoleThemes
 {
-    static class SystemMSBuildConsoleThemes
-    {
-        public static SystemMsBuildConsoleTheme Literate { get; } = new SystemMsBuildConsoleTheme(
-            new Dictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle>
-            {
-                [MSBuildConsoleThemeStyle.Text] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.SecondaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
-                [MSBuildConsoleThemeStyle.TertiaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.Invalid] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Yellow },
-                [MSBuildConsoleThemeStyle.Null] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Blue },
-                [MSBuildConsoleThemeStyle.Name] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
-                [MSBuildConsoleThemeStyle.String] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Cyan },
-                [MSBuildConsoleThemeStyle.Number] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Magenta },
-                [MSBuildConsoleThemeStyle.Boolean] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Blue },
-                [MSBuildConsoleThemeStyle.Scalar] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Green },
-                [MSBuildConsoleThemeStyle.LevelVerbose] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
-                [MSBuildConsoleThemeStyle.LevelDebug] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
-                [MSBuildConsoleThemeStyle.LevelInformation] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.LevelWarning] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Yellow },
-                [MSBuildConsoleThemeStyle.LevelError] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Red },
-                [MSBuildConsoleThemeStyle.LevelFatal] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Red },
-            });
+    public static SystemMsBuildConsoleTheme Literate { get; } = new SystemMsBuildConsoleTheme(
+        new Dictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle>
+        {
+            [MSBuildConsoleThemeStyle.Text] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.SecondaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
+            [MSBuildConsoleThemeStyle.TertiaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.Invalid] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Yellow },
+            [MSBuildConsoleThemeStyle.Null] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Blue },
+            [MSBuildConsoleThemeStyle.Name] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
+            [MSBuildConsoleThemeStyle.String] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Cyan },
+            [MSBuildConsoleThemeStyle.Number] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Magenta },
+            [MSBuildConsoleThemeStyle.Boolean] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Blue },
+            [MSBuildConsoleThemeStyle.Scalar] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Green },
+            [MSBuildConsoleThemeStyle.LevelVerbose] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
+            [MSBuildConsoleThemeStyle.LevelDebug] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
+            [MSBuildConsoleThemeStyle.LevelInformation] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.LevelWarning] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Yellow },
+            [MSBuildConsoleThemeStyle.LevelError] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Red },
+            [MSBuildConsoleThemeStyle.LevelFatal] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Red },
+        });
 
-        public static SystemMsBuildConsoleTheme Grayscale { get; } = new SystemMsBuildConsoleTheme(
-            new Dictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle>
-            {
-                [MSBuildConsoleThemeStyle.Text] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.SecondaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
-                [MSBuildConsoleThemeStyle.TertiaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.Invalid] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.Null] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.Name] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
-                [MSBuildConsoleThemeStyle.String] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.Number] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.Boolean] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.Scalar] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.LevelVerbose] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.LevelDebug] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.LevelInformation] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.LevelWarning] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.LevelError] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Black, Background = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.LevelFatal] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Black, Background = ConsoleColor.White },
-            });
+    public static SystemMsBuildConsoleTheme Grayscale { get; } = new SystemMsBuildConsoleTheme(
+        new Dictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle>
+        {
+            [MSBuildConsoleThemeStyle.Text] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.SecondaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
+            [MSBuildConsoleThemeStyle.TertiaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.Invalid] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.Null] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.Name] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
+            [MSBuildConsoleThemeStyle.String] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.Number] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.Boolean] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.Scalar] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.LevelVerbose] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.LevelDebug] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.LevelInformation] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.LevelWarning] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.LevelError] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Black, Background = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.LevelFatal] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Black, Background = ConsoleColor.White },
+        });
 
-        public static SystemMsBuildConsoleTheme Colored { get; } = new SystemMsBuildConsoleTheme(
-            new Dictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle>
-            {
-                [MSBuildConsoleThemeStyle.Text] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
-                [MSBuildConsoleThemeStyle.SecondaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.TertiaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.Invalid] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Yellow },
-                [MSBuildConsoleThemeStyle.Null] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.Name] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.String] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.Number] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.Boolean] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.Scalar] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
-                [MSBuildConsoleThemeStyle.LevelVerbose] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray, Background = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.LevelDebug] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.DarkGray },
-                [MSBuildConsoleThemeStyle.LevelInformation] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Blue },
-                [MSBuildConsoleThemeStyle.LevelWarning] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray, Background = ConsoleColor.Yellow },
-                [MSBuildConsoleThemeStyle.LevelError] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Red },
-                [MSBuildConsoleThemeStyle.LevelFatal] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Red },
-            });
-    }
+    public static SystemMsBuildConsoleTheme Colored { get; } = new SystemMsBuildConsoleTheme(
+        new Dictionary<MSBuildConsoleThemeStyle, SystemMSBuildConsoleThemeStyle>
+        {
+            [MSBuildConsoleThemeStyle.Text] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray },
+            [MSBuildConsoleThemeStyle.SecondaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.TertiaryText] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.Invalid] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Yellow },
+            [MSBuildConsoleThemeStyle.Null] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.Name] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.String] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.Number] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.Boolean] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.Scalar] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White },
+            [MSBuildConsoleThemeStyle.LevelVerbose] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.Gray, Background = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.LevelDebug] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.DarkGray },
+            [MSBuildConsoleThemeStyle.LevelInformation] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Blue },
+            [MSBuildConsoleThemeStyle.LevelWarning] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.DarkGray, Background = ConsoleColor.Yellow },
+            [MSBuildConsoleThemeStyle.LevelError] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Red },
+            [MSBuildConsoleThemeStyle.LevelFatal] = new SystemMSBuildConsoleThemeStyle { Foreground = ConsoleColor.White, Background = ConsoleColor.Red },
+        });
 }
