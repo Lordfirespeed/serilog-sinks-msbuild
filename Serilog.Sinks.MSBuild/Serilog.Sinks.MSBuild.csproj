@@ -48,8 +48,4 @@ When using this package, MSBuild's assemblies are not copied, which is not a pro
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.8.0" ExcludeAssets="runtime"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Serilog\" />
-    </ItemGroup>
-
 </Project>
