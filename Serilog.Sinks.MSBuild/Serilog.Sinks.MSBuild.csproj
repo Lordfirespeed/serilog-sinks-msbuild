@@ -22,6 +22,7 @@ When using this package, MSBuild's assemblies are not copied, which is not a pro
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <!-- MinVer -->
