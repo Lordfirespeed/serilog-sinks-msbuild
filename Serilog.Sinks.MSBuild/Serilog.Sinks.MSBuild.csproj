@@ -24,6 +24,18 @@ When using this package, MSBuild's assemblies are not copied, which is not a pro
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <!-- MinVer -->
+    <PropertyGroup>
+        <MinVerDefaultPreReleaseIdentifiers>dev</MinVerDefaultPreReleaseIdentifiers>
+        <MinVerTagPrefix>v</MinVerTagPrefix>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="MinVer" Version="4.3.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="Serilog" Version="3.1.1"/>
         <PackageReference Include="Microsoft.Build.Framework" Version="16.8.0" ExcludeAssets="runtime"/>
