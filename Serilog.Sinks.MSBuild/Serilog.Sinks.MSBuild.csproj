@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>1.5.0</Version>
-    <AssemblyVersion>1.3.0</AssemblyVersion>
     <TargetFramework>net8.0</TargetFramework>
     <Title>Serilog sink for MSBuild</Title>
     <Authors>Theodore Tsirpanis</Authors>
