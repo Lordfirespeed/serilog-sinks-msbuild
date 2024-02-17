@@ -25,7 +25,7 @@ namespace Serilog;
 /// redirection to MSBuild via <see cref="MSBuildTaskLogSink"/>.
 /// </summary>
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-public static class TaskLogSinkConfigurationExtensions
+public static class MSBuildLoggerConfigurationExtensions
 {
     /// <summary>
     /// Redirects log events to MSBuild via <paramref name="task"/>.
