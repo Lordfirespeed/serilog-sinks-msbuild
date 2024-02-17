@@ -18,7 +18,6 @@ using Serilog.Sinks.MSBuild;
 using Serilog.Configuration;
 using Serilog.Sinks.MSBuild.Themes;
 
-// ReSharper disable once CheckNamespace
 namespace Serilog;
 
 /// <summary>
