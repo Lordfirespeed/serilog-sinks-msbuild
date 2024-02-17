@@ -33,7 +33,7 @@ and if a Serilog message has an exception, its ToString() representation will be
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Serilog" Version="2.0.0"/>
+        <PackageReference Include="Serilog" Version="3.1.1"/>
         <PackageReference Include="Microsoft.Build.Framework" Version="16.8.0" ExcludeAssets="runtime"/>
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.8.0" ExcludeAssets="runtime"/>
     </ItemGroup>
