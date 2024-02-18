@@ -14,9 +14,13 @@ namespace Serilog.Sinks.MSBuild.Formatting;
 
 struct ThemedValueFormatterState
 {
+    public MSBuildContext Context;
     public TextWriter Output;
     public string? Format;
     public bool IsTopLevel;
 
-    public ThemedValueFormatterState Nest() => new ThemedValueFormatterState { Output = Output };
+    public ThemedValueFormatterState Nest() => new ThemedValueFormatterState {
+        Context = Context,
+        Output = Output,
+    };
 }
