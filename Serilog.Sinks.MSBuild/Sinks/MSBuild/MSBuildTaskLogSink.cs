@@ -67,13 +67,9 @@ public class MSBuildTaskLogSink : ILogEventSink
         switch (logEvent.Level)
         {
             case LogEventLevel.Verbose:
-                LogMessageWithContext(MessageImportance.Low, message, context);
-                break;
             case LogEventLevel.Debug:
-                LogMessageWithContext(MessageImportance.Normal, message, context);
-                break;
             case LogEventLevel.Information:
-                LogMessageWithContext(MessageImportance.High, message, context);
+                LogMessageWithContext(message, context);
                 break;
             case LogEventLevel.Warning:
                 LogWarningWithContext(message, context);
@@ -87,7 +83,7 @@ public class MSBuildTaskLogSink : ILogEventSink
         }
     }
 
-    private void LogMessageWithContext(MessageImportance importance, string message, MSBuildContext context)
+    private void LogMessageWithContext(string message, MSBuildContext context)
         => _taskLoggingHelper.LogMessage(
             context.Subcategory,
             context.MessageCode,
@@ -97,7 +93,7 @@ public class MSBuildTaskLogSink : ILogEventSink
             context.ColumnNumber,
             context.EndLineNumber,
             context.EndColumnNumber,
-            importance,
+            context.Importance,
             message
         );
 
