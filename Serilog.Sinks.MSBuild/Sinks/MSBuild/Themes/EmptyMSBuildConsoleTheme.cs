@@ -18,9 +18,7 @@ class EmptyMSBuildConsoleTheme : MSBuildConsoleTheme
 
     protected override int ResetCharCount { get; }
 
-    public override int Set(TextWriter output, MSBuildConsoleThemeStyle style) => 0;
+    public override int Set(MSBuildContext context, TextWriter output, MSBuildConsoleThemeStyle style) => 0;
 
-    public override void Reset(TextWriter output)
-    {
-    }
+    public override void Reset(MSBuildContext context, TextWriter output) { }
 }
