@@ -59,7 +59,7 @@ class MessageTemplateOutputTokenRenderer : OutputTemplateTokenRenderer
 
         var buffer = new StringWriter();
         var invisible = _renderer.Render(logEvent.MessageTemplate, logEvent.Properties, buffer);
-        var value = buffer.ToString();
+        var value = buffer.ToString().TrimEnd();
         Padding.Apply(output, value, _token.Alignment.Value.Widen(invisible));
     }
 }
