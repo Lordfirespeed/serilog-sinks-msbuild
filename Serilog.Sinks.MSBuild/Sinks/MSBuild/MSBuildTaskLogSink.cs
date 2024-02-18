@@ -63,7 +63,7 @@ public class MSBuildTaskLogSink : ILogEventSink
 
         var buffer = new StringWriter(new StringBuilder(DefaultWriteBufferCapacity));
         _formatter.Format(logEvent, context, buffer);
-        var message = buffer.ToString();
+        var message = buffer.ToString().TrimEnd();
 
         switch (context.Category) {
             case MSBuildLogEventCategory.Message:
