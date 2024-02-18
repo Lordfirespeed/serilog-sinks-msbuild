@@ -41,6 +41,11 @@
 /Serilog.Sinks.MSBuild/[Bb]in
 /Serilog.Sinks.MSBuild/[Oo]bj
 
+### Serilog.Sinks.MSBuild.Tests Project
+!/Serilog.Sinks.MSBuild.Tests
+/Serilog.Sinks.MSBuild.Tests/[Bb]in
+/Serilog.Sinks.MSBuild.Tests/[Oo]bj
+
 # Explicit exceptions/ignores
 **.user
 !**.template.*.user
