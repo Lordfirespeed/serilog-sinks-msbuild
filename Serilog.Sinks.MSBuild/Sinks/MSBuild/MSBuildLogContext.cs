@@ -9,7 +9,9 @@
  * Joe Clack licenses this file to you under the LGPL-3.0-OR-LATER license.
  */
 
+using Microsoft.Build.Framework;
 using Serilog.Events;
+using Serilog.Sinks.MSBuild.Extensions;
 
 namespace Serilog.Sinks.MSBuild;
 
@@ -29,7 +31,11 @@ public record MSBuildContext
     /// <returns><see cref="MSBuildContext"/> populated as much as possible.</returns>
     public static MSBuildContext FromLogEvent(LogEvent logEvent)
     {
+        var (category, importance) = logEvent.Level.ToMSBuildCategory();
+
         return new MSBuildContext {
+            Category = category,
+            Importance = importance,
             Subcategory = GetString(nameof(Subcategory)),
             MessageCode = GetString(nameof(MessageCode)),
             HelpKeyword = GetString(nameof(HelpKeyword)),
@@ -59,6 +65,17 @@ public record MSBuildContext
             return 0;
         }
     }
+
+    /// <summary>
+    /// The message's category.
+    /// </summary>
+    public required MSBuildLogEventCategory Category { get; init; }
+
+    /// <summary>
+    /// The message's importance (used only when message <see cref="Category"/>
+    /// is <see cref="MSBuildLogEventCategory.Message"/>).
+    /// </summary>
+    public MessageImportance? Importance { get; init; }
 
     /// <summary>
     /// The message's subcategory.
