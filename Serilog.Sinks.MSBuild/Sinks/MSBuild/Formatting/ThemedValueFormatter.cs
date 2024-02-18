@@ -25,15 +25,11 @@ abstract class ThemedValueFormatter : LogEventPropertyValueVisitor<ThemedValueFo
         _theme = theme ?? throw new ArgumentNullException(nameof(theme));
     }
 
-    protected MSBuildStyleReset ApplyStyle(TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
-    {
-        return _theme.Apply(output, style, ref invisibleCharacterCount);
-    }
+    protected MSBuildStyleReset ApplyStyle(MSBuildContext context, TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
+        => _theme.Apply(context, output, style, ref invisibleCharacterCount);
 
-    public int Format(LogEventPropertyValue value, TextWriter output, string? format, bool literalTopLevel = false)
-    {
-        return Visit(new ThemedValueFormatterState { Output = output, Format = format, IsTopLevel = literalTopLevel }, value);
-    }
+    public int Format(LogEventPropertyValue value, MSBuildContext context, TextWriter output, string? format, bool literalTopLevel = false)
+        => Visit(new ThemedValueFormatterState { Context = context, Output = output, Format = format, IsTopLevel = literalTopLevel, }, value);
 
     public abstract ThemedValueFormatter SwitchTheme(MSBuildConsoleTheme theme);
 }
