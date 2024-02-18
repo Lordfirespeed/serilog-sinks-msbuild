@@ -75,8 +75,5 @@ public class AnsiMSBuildConsoleTheme : MSBuildConsoleTheme
     }
 
     /// <inheritdoc/>
-    public override void Reset(TextWriter output)
-    {
-        output.Write(AnsiStyleReset);
-    }
+    public override void Reset(TextWriter output) => output.Write(AnsiStyleReset);
 }

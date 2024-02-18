@@ -24,8 +24,5 @@ struct StyleReset : IDisposable
         _output = output;
     }
 
-    public void Dispose()
-    {
-        _theme.Reset(_output);
-    }
+    public void Dispose() => _theme.Reset(_output);
 }
