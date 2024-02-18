@@ -31,12 +31,12 @@ class TimestampTokenRenderer : OutputTemplateTokenRenderer
         _formatProvider = formatProvider;
     }
 
-    public override void Render(LogEvent logEvent, TextWriter output)
+    public override void Render(LogEvent logEvent, MSBuildContext context, TextWriter output)
     {
         var sv = new DateTimeOffsetValue(logEvent.Timestamp);
 
         var _ = 0;
-        using (_theme.Apply(output, MSBuildConsoleThemeStyle.SecondaryText, ref _))
+        using (_theme.Apply(context, output, MSBuildConsoleThemeStyle.SecondaryText, ref _))
         {
             if (_token.Alignment is null)
             {

@@ -27,13 +27,13 @@ class TraceIdTokenRenderer : OutputTemplateTokenRenderer
         _alignment = traceIdToken.Alignment;
     }
 
-    public override void Render(LogEvent logEvent, TextWriter output)
+    public override void Render(LogEvent logEvent, MSBuildContext context, TextWriter output)
     {
         if (logEvent.TraceId is not { } traceId)
             return;
 
         var _ = 0;
-        using (_theme.Apply(output, MSBuildConsoleThemeStyle.Text, ref _))
+        using (_theme.Apply(context, output, MSBuildConsoleThemeStyle.Text, ref _))
         {
             if (_alignment is {} alignment)
                 Padding.Apply(output, traceId.ToString(), alignment);

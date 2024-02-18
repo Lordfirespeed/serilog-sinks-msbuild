@@ -49,16 +49,16 @@ class MessageTemplateOutputTokenRenderer : OutputTemplateTokenRenderer
         _renderer = new ThemedMessageTemplateRenderer(theme, valueFormatter, isLiteral);
     }
 
-    public override void Render(LogEvent logEvent, TextWriter output)
+    public override void Render(LogEvent logEvent, MSBuildContext context, TextWriter output)
     {
         if (_token.Alignment is null || !_theme.CanBuffer)
         {
-            _renderer.Render(logEvent.MessageTemplate, logEvent.Properties, output);
+            _renderer.Render(logEvent.MessageTemplate, logEvent.Properties, context, output);
             return;
         }
 
         var buffer = new StringWriter();
-        var invisible = _renderer.Render(logEvent.MessageTemplate, logEvent.Properties, buffer);
+        var invisible = _renderer.Render(logEvent.MessageTemplate, logEvent.Properties, context, buffer);
         var value = buffer.ToString().TrimEnd();
         Padding.Apply(output, value, _token.Alignment.Value.Widen(invisible));
     }

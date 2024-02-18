@@ -25,7 +25,7 @@ class NewLineTokenRenderer : OutputTemplateTokenRenderer
         _alignment = alignment;
     }
 
-    public override void Render(LogEvent logEvent, TextWriter output)
+    public override void Render(LogEvent logEvent, MSBuildContext context, TextWriter output)
     {
         if (_alignment.HasValue)
             Padding.Apply(output, Environment.NewLine, _alignment.Value.Widen(Environment.NewLine.Length));

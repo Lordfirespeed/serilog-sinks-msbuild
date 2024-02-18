@@ -15,12 +15,15 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Display;
 using Serilog.Parsing;
+using Serilog.Sinks.MSBuild.Formatting;
 using Serilog.Sinks.MSBuild.Themes;
 
 namespace Serilog.Sinks.MSBuild.Output;
 
-class OutputTemplateRenderer : ITextFormatter
+class OutputTemplateRenderer : IMSBuildTextFormatter
 {
+    const string MSBuildContextPropertyKey = "_";
+
     readonly OutputTemplateTokenRenderer[] _renderers;
 
     public OutputTemplateRenderer(MSBuildConsoleTheme theme, string outputTemplate, IFormatProvider? formatProvider)
@@ -79,12 +82,13 @@ class OutputTemplateRenderer : ITextFormatter
         _renderers = renderers.ToArray();
     }
 
-    public void Format(LogEvent logEvent, TextWriter output)
+    public void Format(LogEvent logEvent, MSBuildContext context, TextWriter output)
     {
         if (logEvent is null) throw new ArgumentNullException(nameof(logEvent));
         if (output is null) throw new ArgumentNullException(nameof(output));
 
+
         foreach (var renderer in _renderers)
-            renderer.Render(logEvent, output);
+            renderer.Render(logEvent, context, output);
     }
 }

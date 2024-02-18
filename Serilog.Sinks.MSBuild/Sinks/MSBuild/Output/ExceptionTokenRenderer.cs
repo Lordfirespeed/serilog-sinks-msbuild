@@ -31,7 +31,7 @@ class ExceptionTokenRenderer : OutputTemplateTokenRenderer
         _theme = theme;
     }
 
-    public override void Render(LogEvent logEvent, TextWriter output)
+    public override void Render(LogEvent logEvent, MSBuildContext context, TextWriter output)
     {
         // Padding is never applied by this renderer.
 
@@ -43,7 +43,7 @@ class ExceptionTokenRenderer : OutputTemplateTokenRenderer
         {
             var style = LineIsStackTrace(nextLine) ? MSBuildConsoleThemeStyle.TertiaryText : MSBuildConsoleThemeStyle.ExceptionText;
             var _ = 0;
-            using (_theme.Apply(output, style, ref _))
+            using (_theme.Apply(context, output, style, ref _))
                 output.Write(nextLine);
         }
 

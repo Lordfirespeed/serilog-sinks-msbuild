@@ -21,6 +21,7 @@ using Microsoft.Build.Utilities;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
+using Serilog.Sinks.MSBuild.Formatting;
 using Serilog.Sinks.MSBuild.Themes;
 
 namespace Serilog.Sinks.MSBuild;
@@ -34,7 +35,7 @@ public class MSBuildTaskLogSink : ILogEventSink
 {
     const int DefaultWriteBufferCapacity = 256;
 
-    private readonly ITextFormatter _formatter;
+    private readonly IMSBuildTextFormatter _formatter;
     private readonly MSBuildConsoleTheme _theme;
     private readonly TaskLoggingHelper _taskLoggingHelper;
 
@@ -45,7 +46,7 @@ public class MSBuildTaskLogSink : ILogEventSink
     /// <param name="theme">The theme to apply to the styled output.</param>
     /// <param name="formatter">Supplies culture-specific
     /// formatting information. Can be <see langword="null"/>.</param>
-    public MSBuildTaskLogSink(TaskLoggingHelper taskLoggingHelper, MSBuildConsoleTheme theme, ITextFormatter formatter)
+    public MSBuildTaskLogSink(TaskLoggingHelper taskLoggingHelper, MSBuildConsoleTheme theme, IMSBuildTextFormatter formatter)
     {
         _taskLoggingHelper = taskLoggingHelper ?? throw new ArgumentNullException(nameof(taskLoggingHelper));
         _theme = theme ?? throw new ArgumentNullException(nameof(theme));
@@ -58,11 +59,11 @@ public class MSBuildTaskLogSink : ILogEventSink
         if (!_theme.CanBuffer)
             throw new NotSupportedException("MSBuild log themes must support buffering.");
 
-        var buffer = new StringWriter(new StringBuilder(DefaultWriteBufferCapacity));
-        _formatter.Format(logEvent, buffer);
-        var message = buffer.ToString();
-
         var context = MSBuildContext.FromLogEvent(logEvent);
+
+        var buffer = new StringWriter(new StringBuilder(DefaultWriteBufferCapacity));
+        _formatter.Format(logEvent, context, buffer);
+        var message = buffer.ToString();
 
         switch (context.Category) {
             case MSBuildLogEventCategory.Message:

@@ -25,10 +25,10 @@ class TextTokenRenderer : OutputTemplateTokenRenderer
         _text = text;
     }
 
-    public override void Render(LogEvent logEvent, TextWriter output)
+    public override void Render(LogEvent logEvent, MSBuildContext context, TextWriter output)
     {
         var _ = 0;
-        using (_theme.Apply(output, MSBuildConsoleThemeStyle.TertiaryText, ref _))
+        using (_theme.Apply(context, output, MSBuildConsoleThemeStyle.TertiaryText, ref _))
             output.Write(_text);
     }
 }

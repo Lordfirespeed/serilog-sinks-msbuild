@@ -41,9 +41,9 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
 
         // At the top level, for scalar values, use "display" rendering.
         if (state.IsTopLevel)
-            return _displayFormatter.FormatLiteralValue(scalar, state.Output, state.Format);
+            return _displayFormatter.FormatLiteralValue(scalar, state.Context, state.Output, state.Format);
 
-        return FormatLiteralValue(scalar, state.Output);
+        return FormatLiteralValue(scalar, state.Context, state.Output);
     }
 
     protected override int VisitSequenceValue(ThemedValueFormatterState state, SequenceValue sequence)
@@ -53,7 +53,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
 
         var count = 0;
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('[');
 
         var delim = string.Empty;
@@ -61,7 +61,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
         {
             if (delim.Length != 0)
             {
-                using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+                using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                     state.Output.Write(delim);
             }
 
@@ -69,7 +69,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
             Visit(state.Nest(), sequence.Elements[index]);
         }
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write(']');
 
         return count;
@@ -79,7 +79,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
     {
         var count = 0;
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('{');
 
         var delim = string.Empty;
@@ -87,7 +87,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
         {
             if (delim.Length != 0)
             {
-                using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+                using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                     state.Output.Write(delim);
             }
 
@@ -95,10 +95,10 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
 
             var property = structure.Properties[index];
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.Name, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.Name, ref count))
                 JsonValueFormatter.WriteQuotedJsonString(property.Name, state.Output);
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                 state.Output.Write(": ");
 
             count += Visit(state.Nest(), property.Value);
@@ -106,20 +106,20 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
 
         if (structure.TypeTag != null)
         {
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                 state.Output.Write(delim);
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.Name, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.Name, ref count))
                 JsonValueFormatter.WriteQuotedJsonString("$type", state.Output);
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                 state.Output.Write(": ");
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.String, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.String, ref count))
                 JsonValueFormatter.WriteQuotedJsonString(structure.TypeTag, state.Output);
         }
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('}');
 
         return count;
@@ -129,7 +129,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
     {
         var count = 0;
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('{');
 
         var delim = string.Empty;
@@ -137,7 +137,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
         {
             if (delim.Length != 0)
             {
-                using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+                using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                     state.Output.Write(delim);
             }
 
@@ -149,36 +149,36 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
                     ? MSBuildConsoleThemeStyle.String
                     : MSBuildConsoleThemeStyle.Scalar;
 
-            using (ApplyStyle(state.Output, style, ref count))
+            using (ApplyStyle(state.Context, state.Output, style, ref count))
                 JsonValueFormatter.WriteQuotedJsonString((element.Key.Value ?? "null").ToString() ?? "", state.Output);
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                 state.Output.Write(": ");
 
             count += Visit(state.Nest(), element.Value);
         }
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('}');
 
         return count;
     }
 
-    int FormatLiteralValue(ScalarValue scalar, TextWriter output)
+    int FormatLiteralValue(ScalarValue scalar, MSBuildContext context, TextWriter output)
     {
         var value = scalar.Value;
         var count = 0;
 
         if (value == null)
         {
-            using (ApplyStyle(output, MSBuildConsoleThemeStyle.Null, ref count))
+            using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Null, ref count))
                 output.Write("null");
             return count;
         }
 
         if (value is string str)
         {
-            using (ApplyStyle(output, MSBuildConsoleThemeStyle.String, ref count))
+            using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.String, ref count))
                 JsonValueFormatter.WriteQuotedJsonString(str, output);
             return count;
         }
@@ -187,14 +187,14 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
         {
             if (value is int || value is uint || value is long || value is ulong || value is decimal || value is byte || value is sbyte || value is short || value is ushort)
             {
-                using (ApplyStyle(output, MSBuildConsoleThemeStyle.Number, ref count))
+                using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Number, ref count))
                     output.Write(((IFormattable)value).ToString(null, CultureInfo.InvariantCulture));
                 return count;
             }
 
             if (value is double d)
             {
-                using (ApplyStyle(output, MSBuildConsoleThemeStyle.Number, ref count))
+                using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Number, ref count))
                 {
                     if (double.IsNaN(d) || double.IsInfinity(d))
                         JsonValueFormatter.WriteQuotedJsonString(d.ToString(CultureInfo.InvariantCulture), output);
@@ -206,7 +206,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
 
             if (value is float f)
             {
-                using (ApplyStyle(output, MSBuildConsoleThemeStyle.Number, ref count))
+                using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Number, ref count))
                 {
                     if (double.IsNaN(f) || double.IsInfinity(f))
                         JsonValueFormatter.WriteQuotedJsonString(f.ToString(CultureInfo.InvariantCulture), output);
@@ -218,7 +218,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
 
             if (value is bool b)
             {
-                using (ApplyStyle(output, MSBuildConsoleThemeStyle.Boolean, ref count))
+                using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Boolean, ref count))
                     output.Write(b ? "true" : "false");
 
                 return count;
@@ -226,14 +226,14 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
 
             if (value is char ch)
             {
-                using (ApplyStyle(output, MSBuildConsoleThemeStyle.Scalar, ref count))
+                using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Scalar, ref count))
                     JsonValueFormatter.WriteQuotedJsonString(ch.ToString(), output);
                 return count;
             }
 
             if (value is DateTime || value is DateTimeOffset)
             {
-                using (ApplyStyle(output, MSBuildConsoleThemeStyle.Scalar, ref count))
+                using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Scalar, ref count))
                 {
                     output.Write('"');
                     output.Write(((IFormattable)value).ToString("O", CultureInfo.InvariantCulture));
@@ -243,7 +243,7 @@ class ThemedJsonValueFormatter : ThemedValueFormatter
             }
         }
 
-        using (ApplyStyle(output, MSBuildConsoleThemeStyle.Scalar, ref count))
+        using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Scalar, ref count))
             JsonValueFormatter.WriteQuotedJsonString(value.ToString() ?? "", output);
 
         return count;

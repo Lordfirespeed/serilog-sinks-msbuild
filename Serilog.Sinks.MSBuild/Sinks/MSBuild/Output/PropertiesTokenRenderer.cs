@@ -49,7 +49,7 @@ class PropertiesTokenRenderer : OutputTemplateTokenRenderer
             : new ThemedDisplayValueFormatter(theme, formatProvider);
     }
 
-    public override void Render(LogEvent logEvent, TextWriter output)
+    public override void Render(LogEvent logEvent, MSBuildContext context, TextWriter output)
     {
         var included = logEvent.Properties
             .Where(p => !TemplateContainsPropertyName(logEvent.MessageTemplate, p.Key) &&
@@ -60,12 +60,12 @@ class PropertiesTokenRenderer : OutputTemplateTokenRenderer
 
         if (_token.Alignment is null || !_theme.CanBuffer)
         {
-            _valueFormatter.Format(value, output, null);
+            _valueFormatter.Format(value, context, output, null);
             return;
         }
 
         var buffer = new StringWriter(new StringBuilder(value.Properties.Count * 16));
-        var invisible = _valueFormatter.Format(value, buffer, null);
+        var invisible = _valueFormatter.Format(value, context, buffer, null);
         var str = buffer.ToString();
         Padding.Apply(output, str, _token.Alignment.Value.Widen(invisible));
     }

@@ -15,5 +15,5 @@ namespace Serilog.Sinks.MSBuild.Output;
 
 abstract class OutputTemplateTokenRenderer
 {
-    public abstract void Render(LogEvent logEvent, TextWriter output);
+    public abstract void Render(LogEvent logEvent, MSBuildContext context, TextWriter output);
 }
