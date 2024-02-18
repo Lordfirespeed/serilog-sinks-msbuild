@@ -43,6 +43,8 @@ public class AnsiMSBuildConsoleTheme : MSBuildConsoleTheme
 
     readonly IReadOnlyDictionary<MSBuildConsoleThemeStyle, string> _styles;
     const string AnsiStyleReset = "\x1b[0m";
+    const string MSBuildErrorStyle = "\x1b[38;5;9m";
+    const string MSBuildWarningStyle = "\x1b[38;5;11m";
 
     /// <summary>
     /// Construct a theme given a set of styles.
