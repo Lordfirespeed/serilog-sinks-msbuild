@@ -60,6 +60,15 @@ public class AnsiMSBuildConsoleTheme : MSBuildConsoleTheme
     /// <inheritdoc/>
     public override bool CanBuffer => true;
 
+    /// <param name="context">The <see cref="MSBuildContext"/> of the styled message.</param>
+    /// <returns>The appropriate reset string for the <see cref="MSBuildContext"/>.</returns>
+    protected virtual string GetReset(MSBuildContext context) => context.Category switch {
+        MSBuildLogEventCategory.Message => AnsiStyleReset,
+        MSBuildLogEventCategory.Warning => MSBuildWarningStyle,
+        MSBuildLogEventCategory.Error => MSBuildErrorStyle,
+        _ => throw new ArgumentOutOfRangeException(nameof(context), context, $"Unrecognised {nameof(MSBuildLogEventCategory)}")
+    };
+
     /// <inheritdoc/>
     protected override int GetResetCharCount(MSBuildContext context) => AnsiStyleReset.Length;
 
