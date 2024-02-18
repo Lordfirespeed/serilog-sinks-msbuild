@@ -16,7 +16,7 @@ class EmptyMSBuildConsoleTheme : MSBuildConsoleTheme
 {
     public override bool CanBuffer => true;
 
-    protected override int ResetCharCount { get; } = 0;
+    protected override int GetResetCharCount(MSBuildContext context) => 0;
 
     public override int Set(MSBuildContext context, TextWriter output, MSBuildConsoleThemeStyle style) => 0;
 

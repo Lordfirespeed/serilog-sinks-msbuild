@@ -61,10 +61,10 @@ public class AnsiMSBuildConsoleTheme : MSBuildConsoleTheme
     public override bool CanBuffer => true;
 
     /// <inheritdoc/>
-    protected override int ResetCharCount { get; } = AnsiStyleReset.Length;
+    protected override int GetResetCharCount(MSBuildContext context) => AnsiStyleReset.Length;
 
     /// <inheritdoc/>
-    public override int Set(TextWriter output, MSBuildConsoleThemeStyle style)
+    public override int Set(MSBuildContext context, TextWriter output, MSBuildConsoleThemeStyle style)
     {
         if (_styles.TryGetValue(style, out var ansiStyle))
         {
@@ -75,5 +75,5 @@ public class AnsiMSBuildConsoleTheme : MSBuildConsoleTheme
     }
 
     /// <inheritdoc/>
-    public override void Reset(TextWriter output) => output.Write(AnsiStyleReset);
+    public override void Reset(MSBuildContext context, TextWriter output) => output.Write(AnsiStyleReset);
 }

@@ -44,15 +44,14 @@ public abstract class MSBuildConsoleTheme
     /// <param name="output">Output destination.</param>
     public abstract void Reset(MSBuildContext context, TextWriter output);
 
-    /// <summary>
-    /// The number of characters written by the <see cref="Reset(MSBuildContext,TextWriter)"/> method.
-    /// </summary>
-    protected abstract int ResetCharCount { get; }
+    /// <param name="context">Output <see cref="MSBuildContext"/>.</param>
+    /// <returns>The number of characters written by the <see cref="Reset(MSBuildContext,TextWriter)"/> method.</returns>
+    protected abstract int GetResetCharCount(MSBuildContext context);
 
     internal MSBuildStyleReset Apply(MSBuildContext context, TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
     {
         invisibleCharacterCount += Set(context, output, style);
-        invisibleCharacterCount += ResetCharCount;
+        invisibleCharacterCount += GetResetCharCount(context);
 
         return new MSBuildStyleReset(this, context, output);
     }
