@@ -34,6 +34,26 @@ public enum MSBuildConsoleThemeStyle
     TertiaryText,
 
     /// <summary>
+    /// Prominent 'success' text.
+    /// </summary>
+    SuccessText,
+
+    /// <summary>
+    /// Prominent 'danger' text.
+    /// </summary>
+    DangerText,
+
+    /// <summary>
+    /// Prominent 'warning' text.
+    /// </summary>
+    WarningText,
+
+    /// <summary>
+    /// Prominent 'exception' text.
+    /// </summary>
+    ExceptionText,
+
+    /// <summary>
     /// Output demonstrating some kind of configuration issue, e.g. an invalid
     /// message template token.
     /// </summary>
