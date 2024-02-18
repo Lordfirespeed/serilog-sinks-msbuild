@@ -90,7 +90,7 @@ public class MSBuildTaskLogSink : ILogEventSink
             context.ColumnNumber,
             context.EndLineNumber,
             context.EndColumnNumber,
-            context.Importance,
+            (MessageImportance)context.Importance!,
             message
         );
 
