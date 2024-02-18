@@ -20,7 +20,7 @@ public sealed class MessageClass : ILogEventEnricher
     /// <see cref="MSBuildConsoleThemeStyle"/> to apply.
     /// </summary>
     /// <seealso cref="Enrich"/>
-    public const string PropertyName = nameof(MessageClass);
+    public const string PropertyName = $"_{nameof(MessageClass)}";
 
     /// <summary>
     /// Apply the standard text theme.
