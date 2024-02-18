@@ -70,7 +70,7 @@ public class AnsiMSBuildConsoleTheme : MSBuildConsoleTheme
     };
 
     /// <inheritdoc/>
-    protected override int GetResetCharCount(MSBuildContext context) => AnsiStyleReset.Length;
+    protected override int GetResetCharCount(MSBuildContext context) => GetReset(context).Length;
 
     /// <inheritdoc/>
     public override int Set(MSBuildContext context, TextWriter output, MSBuildConsoleThemeStyle style)
@@ -84,5 +84,5 @@ public class AnsiMSBuildConsoleTheme : MSBuildConsoleTheme
     }
 
     /// <inheritdoc/>
-    public override void Reset(MSBuildContext context, TextWriter output) => output.Write(AnsiStyleReset);
+    public override void Reset(MSBuildContext context, TextWriter output) => output.Write(GetReset(context));
 }
