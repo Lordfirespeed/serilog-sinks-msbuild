@@ -41,7 +41,7 @@ class ThemedMessageTemplateRenderer
         {
             if (token is TextToken tt)
             {
-                count += RenderTextToken(tt, output);
+                count += RenderTextToken(tt, properties, output);
             }
             else
             {
@@ -52,12 +52,29 @@ class ThemedMessageTemplateRenderer
         return count;
     }
 
-    int RenderTextToken(TextToken tt, TextWriter output)
+    int RenderTextToken(TextToken tt, IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
     {
         var count = 0;
-        using (_theme.Apply(output, MSBuildConsoleThemeStyle.Text, ref count))
+        using (_theme.Apply(output, GetDefaultedContextTextThemeStyle(), ref count))
             output.Write(tt.Text);
         return count;
+
+        MSBuildConsoleThemeStyle GetDefaultedContextTextThemeStyle()
+            => GetContextTextThemeStyle() ?? MessageClass.Default.Style;
+
+        MSBuildConsoleThemeStyle? GetContextTextThemeStyle()
+        {
+            if (!properties.TryGetValue(MessageClass.PropertyName, out var propertyValue))
+                return null;
+
+            if (propertyValue is not ScalarValue scalarValue)
+                return null;
+
+            if (scalarValue.Value is MessageClass @class)
+                return @class.Style;
+
+            return null;
+        }
     }
 
     int RenderPropertyToken(PropertyToken pt, IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
