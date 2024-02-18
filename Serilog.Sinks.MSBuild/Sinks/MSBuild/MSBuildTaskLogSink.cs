@@ -64,22 +64,18 @@ public class MSBuildTaskLogSink : ILogEventSink
 
         var context = MSBuildContext.FromLogEvent(logEvent);
 
-        switch (logEvent.Level)
-        {
-            case LogEventLevel.Verbose:
-            case LogEventLevel.Debug:
-            case LogEventLevel.Information:
+        switch (context.Category) {
+            case MSBuildLogEventCategory.Message:
                 LogMessageWithContext(message, context);
                 break;
-            case LogEventLevel.Warning:
+            case MSBuildLogEventCategory.Warning:
                 LogWarningWithContext(message, context);
                 break;
-            case LogEventLevel.Error:
-            case LogEventLevel.Fatal:
+            case MSBuildLogEventCategory.Error:
                 LogErrorWithContext(message, context);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(logEvent), $"Unrecognised {nameof(LogEventLevel)}");
+                throw new ArgumentOutOfRangeException(nameof(context.Category), context.Category, $"Unrecognised {nameof(MSBuildLogEventCategory)}");
         }
     }
 
