@@ -17,12 +17,14 @@ struct MSBuildStyleReset : IDisposable
 {
     readonly MSBuildConsoleTheme _theme;
     readonly TextWriter _output;
+    readonly MSBuildContext _context;
 
-    public MSBuildStyleReset(MSBuildConsoleTheme theme, TextWriter output)
+    public MSBuildStyleReset(MSBuildConsoleTheme theme, MSBuildContext context, TextWriter output)
     {
         _theme = theme;
         _output = output;
+        _context = context;
     }
 
-    public void Dispose() => _theme.Reset(_output);
+    public void Dispose() => _theme.Reset(_context, _output);
 }

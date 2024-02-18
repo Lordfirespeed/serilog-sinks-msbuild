@@ -31,27 +31,29 @@ public abstract class MSBuildConsoleTheme
     /// <summary>
     /// Begin a span of text in the specified <paramref name="style"/>.
     /// </summary>
+    /// /// <param name="context">Output <see cref="MSBuildContext"/>.</param>
     /// <param name="output">Output destination.</param>
     /// <param name="style">Style to apply.</param>
     /// <returns> The number of characters written to <paramref name="output"/>. </returns>
-    public abstract int Set(TextWriter output, MSBuildConsoleThemeStyle style);
+    public abstract int Set(MSBuildContext context, TextWriter output, MSBuildConsoleThemeStyle style);
 
     /// <summary>
-    /// Reset the output to un-styled colors.
+    /// Reset the output to default MSBuild colours for the context.
     /// </summary>
+    /// <param name="context">Output <see cref="MSBuildContext"/>.</param>
     /// <param name="output">Output destination.</param>
-    public abstract void Reset(TextWriter output);
+    public abstract void Reset(MSBuildContext context, TextWriter output);
 
     /// <summary>
     /// The number of characters written by the <see cref="Reset(TextWriter)"/> method.
     /// </summary>
     protected abstract int ResetCharCount { get; }
 
-    internal MSBuildStyleReset Apply(TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
+    internal MSBuildStyleReset Apply(MSBuildContext context, TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
     {
-        invisibleCharacterCount += Set(output, style);
+        invisibleCharacterCount += Set(context, output, style);
         invisibleCharacterCount += ResetCharCount;
 
-        return new MSBuildStyleReset(this, output);
+        return new MSBuildStyleReset(this, context, output);
     }
 }
