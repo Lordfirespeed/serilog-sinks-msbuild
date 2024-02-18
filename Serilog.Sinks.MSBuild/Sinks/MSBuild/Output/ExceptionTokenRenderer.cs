@@ -41,7 +41,7 @@ class ExceptionTokenRenderer : OutputTemplateTokenRenderer
         var lines = new StringReader(logEvent.RenderException(ExceptionRenderStyle));
         while (lines.ReadLine() is { } nextLine)
         {
-            var style = LineIsStackTrace(nextLine) ? MSBuildConsoleThemeStyle.SecondaryText : MSBuildConsoleThemeStyle.Text;
+            var style = LineIsStackTrace(nextLine) ? MSBuildConsoleThemeStyle.SecondaryText : MSBuildConsoleThemeStyle.ExceptionText;
             var _ = 0;
             using (_theme.Apply(output, style, ref _))
                 output.Write(nextLine);
