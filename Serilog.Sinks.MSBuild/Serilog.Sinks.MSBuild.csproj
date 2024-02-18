@@ -25,7 +25,11 @@ When using this package, MSBuild's assemblies are not copied, which is not a pro
         <Nullable>enable</Nullable>
         <DebugType>embedded</DebugType>
     </PropertyGroup>
-    
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(ProjectName).Tests" />
+    </ItemGroup>
+
     <PropertyGroup Condition="$(Configuration) == 'Release'">
         <Optimize>true</Optimize>
     </PropertyGroup>
