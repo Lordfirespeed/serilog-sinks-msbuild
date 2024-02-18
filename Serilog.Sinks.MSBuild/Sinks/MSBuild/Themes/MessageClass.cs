@@ -46,8 +46,14 @@ public sealed class MessageClass : ILogEventEnricher
     /// <seealso cref="MSBuildConsoleThemeStyle.WarningText"/>
     public static MessageClass Warning = new MessageClass("Warning", MSBuildConsoleThemeStyle.WarningText);
 
+    /// <summary>
+    /// The name of this <see cref="MessageClass"/>.
+    /// </summary>
     public string Name { get; }
-    
+
+    /// <summary>
+    /// The <see cref="MSBuildConsoleThemeStyle"/> that this <see cref="MessageClass"/> applies to templated message text.
+    /// </summary>
     public MSBuildConsoleThemeStyle Style { get; }
 
     private MessageClass(string name, MSBuildConsoleThemeStyle style)
@@ -56,6 +62,7 @@ public sealed class MessageClass : ILogEventEnricher
         Style = style;
     }
 
+    /// <inheritdoc />
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
         if (logEvent is null) throw new ArgumentNullException(nameof(logEvent));
