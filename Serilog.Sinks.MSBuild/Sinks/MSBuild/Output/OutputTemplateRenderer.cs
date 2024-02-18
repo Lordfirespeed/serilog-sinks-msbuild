@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Serilog.Events;
-using Serilog.Formatting;
 using Serilog.Formatting.Display;
 using Serilog.Parsing;
 using Serilog.Sinks.MSBuild.Formatting;
