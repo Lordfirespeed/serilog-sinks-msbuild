@@ -21,8 +21,6 @@ namespace Serilog.Sinks.MSBuild.Output;
 
 class OutputTemplateRenderer : IMSBuildTextFormatter
 {
-    const string MSBuildContextPropertyKey = "_";
-
     readonly OutputTemplateTokenRenderer[] _renderers;
 
     public OutputTemplateRenderer(MSBuildConsoleTheme theme, string outputTemplate, IFormatProvider? formatProvider)
