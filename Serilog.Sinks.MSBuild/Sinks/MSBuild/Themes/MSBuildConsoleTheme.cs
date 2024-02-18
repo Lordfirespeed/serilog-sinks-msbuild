@@ -47,11 +47,11 @@ public abstract class MSBuildConsoleTheme
     /// </summary>
     protected abstract int ResetCharCount { get; }
 
-    internal StyleReset Apply(TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
+    internal MSBuildStyleReset Apply(TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
     {
         invisibleCharacterCount += Set(output, style);
         invisibleCharacterCount += ResetCharCount;
 
-        return new StyleReset(this, output);
+        return new MSBuildStyleReset(this, output);
     }
 }

@@ -13,12 +13,12 @@ using System.IO;
 
 namespace Serilog.Sinks.MSBuild.Themes;
 
-struct StyleReset : IDisposable
+struct MSBuildStyleReset : IDisposable
 {
     readonly MSBuildConsoleTheme _theme;
     readonly TextWriter _output;
 
-    public StyleReset(MSBuildConsoleTheme theme, TextWriter output)
+    public MSBuildStyleReset(MSBuildConsoleTheme theme, TextWriter output)
     {
         _theme = theme;
         _output = output;

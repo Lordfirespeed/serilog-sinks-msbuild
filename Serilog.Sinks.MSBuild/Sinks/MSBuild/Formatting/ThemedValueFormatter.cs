@@ -25,7 +25,7 @@ abstract class ThemedValueFormatter : LogEventPropertyValueVisitor<ThemedValueFo
         _theme = theme ?? throw new ArgumentNullException(nameof(theme));
     }
 
-    protected StyleReset ApplyStyle(TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
+    protected MSBuildStyleReset ApplyStyle(TextWriter output, MSBuildConsoleThemeStyle style, ref int invisibleCharacterCount)
     {
         return _theme.Apply(output, style, ref invisibleCharacterCount);
     }
