@@ -45,6 +45,7 @@ class ExceptionTokenRenderer : OutputTemplateTokenRenderer
             var _ = 0;
             using (_theme.Apply(context, output, style, ref _))
                 output.Write(nextLine);
+            output.WriteLine();
         }
 
         // https://stackoverflow.com/a/20411839/11045433
