@@ -34,7 +34,7 @@ public abstract class MSBuildConsoleTheme
     /// /// <param name="context">Output <see cref="MSBuildContext"/>.</param>
     /// <param name="output">Output destination.</param>
     /// <param name="style">Style to apply.</param>
-    /// <returns> The number of characters written to <paramref name="output"/>. </returns>
+    /// <returns>The number of characters written to <paramref name="output"/>.</returns>
     public abstract int Set(MSBuildContext context, TextWriter output, MSBuildConsoleThemeStyle style);
 
     /// <summary>
