@@ -45,7 +45,7 @@ public abstract class MSBuildConsoleTheme
     public abstract void Reset(MSBuildContext context, TextWriter output);
 
     /// <summary>
-    /// The number of characters written by the <see cref="Reset(TextWriter)"/> method.
+    /// The number of characters written by the <see cref="Reset(MSBuildContext,TextWriter)"/> method.
     /// </summary>
     protected abstract int ResetCharCount { get; }
 
