@@ -35,7 +35,7 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
     {
         if (scalar is null)
             throw new ArgumentNullException(nameof(scalar));
-        return FormatLiteralValue(scalar, state.Output, state.Format);
+        return FormatLiteralValue(scalar, state.Context, state.Output, state.Format);
     }
 
     protected override int VisitSequenceValue(ThemedValueFormatterState state, SequenceValue sequence)
@@ -45,7 +45,7 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
 
         var count = 0;
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('[');
 
         var delim = string.Empty;
@@ -53,7 +53,7 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
         {
             if (delim.Length != 0)
             {
-                using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+                using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                     state.Output.Write(delim);
             }
 
@@ -61,7 +61,7 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
             Visit(state, sequence.Elements[index]);
         }
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write(']');
 
         return count;
@@ -73,13 +73,13 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
 
         if (structure.TypeTag != null)
         {
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.Name, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.Name, ref count))
                 state.Output.Write(structure.TypeTag);
 
             state.Output.Write(' ');
         }
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('{');
 
         var delim = string.Empty;
@@ -87,7 +87,7 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
         {
             if (delim.Length != 0)
             {
-                using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+                using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                     state.Output.Write(delim);
             }
 
@@ -95,16 +95,16 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
 
             var property = structure.Properties[index];
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.Name, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.Name, ref count))
                 state.Output.Write(property.Name);
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                 state.Output.Write('=');
 
             count += Visit(state.Nest(), property.Value);
         }
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('}');
 
         return count;
@@ -114,7 +114,7 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
     {
         var count = 0;
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('{');
 
         var delim = string.Empty;
@@ -122,45 +122,45 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
         {
             if (delim.Length != 0)
             {
-                using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+                using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                     state.Output.Write(delim);
             }
 
             delim = ", ";
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                 state.Output.Write('[');
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.String, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.String, ref count))
                 count += Visit(state.Nest(), element.Key);
 
-            using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+            using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
                 state.Output.Write("]=");
 
             count += Visit(state.Nest(), element.Value);
         }
 
-        using (ApplyStyle(state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
+        using (ApplyStyle(state.Context, state.Output, MSBuildConsoleThemeStyle.TertiaryText, ref count))
             state.Output.Write('}');
 
         return count;
     }
 
-    public int FormatLiteralValue(ScalarValue scalar, TextWriter output, string? format)
+    public int FormatLiteralValue(ScalarValue scalar, MSBuildContext context, TextWriter output, string? format)
     {
         var value = scalar.Value;
         var count = 0;
 
         if (value is null)
         {
-            using (ApplyStyle(output, MSBuildConsoleThemeStyle.Null, ref count))
+            using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Null, ref count))
                 output.Write("null");
             return count;
         }
 
         if (value is string str)
         {
-            using (ApplyStyle(output, MSBuildConsoleThemeStyle.String, ref count))
+            using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.String, ref count))
             {
                 if (format != "l")
                     JsonValueFormatter.WriteQuotedJsonString(str, output);
@@ -176,14 +176,14 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
                 value is decimal || value is byte || value is sbyte || value is short ||
                 value is ushort || value is float || value is double)
             {
-                using (ApplyStyle(output, MSBuildConsoleThemeStyle.Number, ref count))
+                using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Number, ref count))
                     scalar.Render(output, format, _formatProvider);
                 return count;
             }
 
             if (value is bool b)
             {
-                using (ApplyStyle(output, MSBuildConsoleThemeStyle.Boolean, ref count))
+                using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Boolean, ref count))
                     output.Write(b);
 
                 return count;
@@ -191,7 +191,7 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
 
             if (value is char ch)
             {
-                using (ApplyStyle(output, MSBuildConsoleThemeStyle.Scalar, ref count))
+                using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Scalar, ref count))
                 {
                     output.Write('\'');
                     output.Write(ch);
@@ -201,7 +201,7 @@ class ThemedDisplayValueFormatter : ThemedValueFormatter
             }
         }
 
-        using (ApplyStyle(output, MSBuildConsoleThemeStyle.Scalar, ref count))
+        using (ApplyStyle(context, output, MSBuildConsoleThemeStyle.Scalar, ref count))
             scalar.Render(output, format, _formatProvider);
 
         return count;
