@@ -23,10 +23,10 @@ namespace Serilog.Sinks.MSBuild;
 public record MSBuildContext
 {
     /// <summary>
-    ///
+    /// Populate an <see cref="MSBuildContext"/> using a SeriLog <see cref="LogEvent"/>.
     /// </summary>
-    /// <param name="logEvent"></param>
-    /// <returns></returns>
+    /// <param name="logEvent">The <see cref="LogEvent"/> used to lookup contextual information.</param>
+    /// <returns><see cref="MSBuildContext"/> populated as much as possible.</returns>
     public static MSBuildContext FromLogEvent(LogEvent logEvent)
     {
         return new MSBuildContext {
