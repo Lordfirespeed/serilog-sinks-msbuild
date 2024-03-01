@@ -6,6 +6,7 @@
         <Authors>Theodore Tsirpanis, Joe Clack</Authors>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>serilog;logging;msbuild</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <Description>This package provides a Serilog sink that redirects events to MSBuild.
 
 It is useful when an MSBuild task calls code that uses Serilog.
@@ -25,6 +26,11 @@ When using this package, MSBuild's assemblies are not copied, which is not a pro
         <Nullable>enable</Nullable>
         <DebugType>embedded</DebugType>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(ProjectDir)../README.md" Pack="true" PackagePath="/"/>
+        <None Include="$(ProjectDir)../assets/icons/icon.png" Pack="true" PackagePath="/"/>
+    </ItemGroup>
 
     <ItemGroup>
         <InternalsVisibleTo Include="$(ProjectName).Tests" />
