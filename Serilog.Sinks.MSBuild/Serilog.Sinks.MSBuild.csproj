@@ -12,7 +12,7 @@
 It is useful when an MSBuild task calls code that uses Serilog.
 
 When using this package, MSBuild's assemblies are not copied, which is not a problem for custom task assemblies.</Description>
-        <PackageIcon>logo.png</PackageIcon>
+        <PackageIcon>icon.png</PackageIcon>
         <PackageIconUrl>https://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
         <PackageProjectUrl>https://github.com/serilog-contrib/serilog-sinks-msbuild</PackageProjectUrl>
         <PackageReleaseNotes>MSBuild versions prior to 16.8 and runtimes other than .NET 8.0 are no longer supported.</PackageReleaseNotes>
