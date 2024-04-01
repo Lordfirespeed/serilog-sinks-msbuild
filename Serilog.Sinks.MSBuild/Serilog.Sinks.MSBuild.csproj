@@ -15,7 +15,7 @@ When using this package, MSBuild's assemblies are not copied, which is not a pro
         <PackageIcon>icon.png</PackageIcon>
         <PackageIconUrl>https://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
         <PackageProjectUrl>https://github.com/serilog-contrib/serilog-sinks-msbuild</PackageProjectUrl>
-        <PackageReleaseNotes>MSBuild versions prior to 16.8 and runtimes other than .NET 8.0 are no longer supported.</PackageReleaseNotes>
+        <PackageReleaseNotes>MSBuild versions prior to 16.8 and runtimes other than .NET 8.0+ and .NET framework 4.7.2+ are no longer supported.</PackageReleaseNotes>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -53,6 +53,7 @@ When using this package, MSBuild's assemblies are not copied, which is not a pro
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="PolySharp" Version="1.14.1" PrivateAssets="all"/>
         <PackageReference Include="Serilog" Version="3.1.1"/>
         <PackageReference Include="Microsoft.Build.Framework" Version="16.8.0" ExcludeAssets="runtime"/>
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.8.0" ExcludeAssets="runtime"/>
