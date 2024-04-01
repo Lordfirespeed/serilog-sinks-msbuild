@@ -31,7 +31,7 @@ public static class StringExtensions
     public static string MultilineIndent(this string input, int spaces)
         => String.Join(
             Environment.NewLine,
-            input.Split("\n")
+            input.Split('\n')
                 .Select(line => line.Trim())
                 .Select(line => line.Indent(spaces))
             );
