@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFrameworks>net8.0;net472</TargetFrameworks>
         <Title>Serilog sink for MSBuild</Title>
         <Authors>Theodore Tsirpanis, Joe Clack</Authors>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
